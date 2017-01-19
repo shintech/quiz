@@ -1,7 +1,8 @@
 var Marionette = require('marionette');
 var style = require("./public/css/style.scss");
-var Questions = require("./collections").questions;
-var QuestionsView = require("./views").questionsView;
+var Question = require("./models/Question");
+var Questions = require("./collections/Questions");
+var QuestionsView = require("./views/QuestionsView");
 
 var Controller = Marionette.Object.extend({
   
@@ -9,10 +10,9 @@ var Controller = Marionette.Object.extend({
     
     this.app = options.app;
     
-    var questions = new Questions();
-    var questionsView = new QuestionsView({ collection: questions });
-    
-    questions.fetch({
+    this.questions = new Questions();
+
+    this.questions.fetch({
       success: function(request, response){
         console.log("Successfully fetched questions...")
       },
@@ -21,10 +21,10 @@ var Controller = Marionette.Object.extend({
       }
     });
     
-    this.options.questionsView = questionsView;
-    this.app.view.showChildView('main', this.options.questionsView);
+    this.questionsView = new QuestionsView({ collection: this.questions });
+    this.app.view.showChildView('main', this.questionsView);
     
-  }
+  },
   
 });
 

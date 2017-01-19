@@ -1,5 +1,5 @@
 var QuestionView = Backbone.Marionette.View.extend({
-  tagName: 'li',
+  tagName: 'div',
   template: require("../templates/question-view-template.html")
 });
 

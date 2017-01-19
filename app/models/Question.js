@@ -1,3 +1,6 @@
 var Question = Backbone.Model.extend({
-  urlRoot: "http://shintech.ninja:8000/api/questions"
-})
+  idAttribute: '_id',
+  urlRoot: "http://shintech.ninja:8000/api/questions/"
+});
+
+module.exports = Question;
