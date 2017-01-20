@@ -2,6 +2,6 @@
 
 <ul>
   <% answers.forEach(function(data){ %>
-    <li id=<%- data._id %>><%- JSON.stringify(data.content) %></li> 
+    <li class="answer" correct=<%- data.correct %>><%- JSON.stringify(data.content) %></li> 
   <% }, this) %>  
 </ul>

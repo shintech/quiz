@@ -25,6 +25,7 @@ var questionSchema = new Schema({
 
 var answerSchema = new Schema({
   _question: { type: Number, ref: "Question" },
+  correct: Boolean,
   content: String
 });
 

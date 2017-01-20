@@ -19,48 +19,63 @@ function getSingleQuestion(req, res){
   })
 }
 
+function getQuestionsAnswers(req, res){
+  Answer.find()
+    .populate('_question')
+    .exec(function(err, answer){
+      res.status(200)
+        .json(answer)
+    })
+}
+
 function createQuestion(req, res){
   
   var question = new Question({
     content: req.body.content
   });
   
-  var answer1 = new Answer({
-    _question: question._id,
-    content: req.body.answer1
-  });  
-  var answer2 = new Answer({
-    _question: question._id,
-    content: req.body.answer2
-  });  
-  var answer3 = new Answer({
-    _question: question._id,
-    content: req.body.answer3
-  });  
-  var answer4 = new Answer({
-    _question: question._id,
-    content: req.body.answer4
-  }); 
-  
-  answer1.save(function(err){
+  question.save(function(err, data){ 
     if(err){ console.log(err) }
-  });
-  answer2.save(function(err){
-    if(err){ console.log(err) }
-  });
-  answer3.save(function(err){
-    if(err){ console.log(err) }
-  });
-  answer4.save(function(err){
-    if(err){ console.log(err) }
-  });
-  
-  question.answers.push(answer1, answer2, answer3, answer4);
-  
-  question.save(function(err, data){  
+    var answer1 = new Answer({
+      _question: data._id,
+      content: req.body.answer1,
+      correct: req.body.answer1Correct
+    });  
+    var answer2 = new Answer({
+      _question: data._id,
+      content: req.body.answer2,
+      correct: req.body.answer2Correct
+    });  
+    var answer3 = new Answer({
+      _question: data._id,
+      content: req.body.answer3,
+      correct: req.body.answer3Correct
+    });  
+    var answer4 = new Answer({
+      _question: data._id,
+      content: req.body.answer4,
+      correct: req.body.answer4Correct
+    }); 
+    answer1.save(function(err){
+      if(err){ console.log(err) }
+    });
+    answer2.save(function(err){
+      if(err){ console.log(err) }
+    });
+    answer3.save(function(err){
+      if(err){ console.log(err) }
+    });
+    answer4.save(function(err){
+      if(err){ console.log(err) }
+    });
+    
+    question.answers.push(answer1._id, answer2._id, answer3._id, answer4._id);
+    question.save();
+
     res.status(200)
       .json({ success: data, message: "Created one question...", });
   });
+
 
 
 }
@@ -92,5 +107,6 @@ module.exports = {
   getSingleQuestion: getSingleQuestion,
   createQuestion: createQuestion,
   updateQuestion: updateQuestion,
-  removeQuestion: removeQuestion
+  removeQuestion: removeQuestion,
+  getQuestionsAnswers: getQuestionsAnswers,
 };

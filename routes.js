@@ -11,5 +11,7 @@ router.route("/questions/:id")
   .put(db.updateQuestion)
   .delete(db.removeQuestion)
 
+router.route("/answers")
+  .get(db.getQuestionsAnswers)
 
 module.exports = router;
