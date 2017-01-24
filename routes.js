@@ -12,6 +12,9 @@ router.route("/questions/:id")
   .delete(db.removeQuestion)
 
 router.route("/answers")
+  .get(db.getAnswers)
+  
+router.route('/questions/:id/answers')
   .get(db.getQuestionsAnswers)
 
 module.exports = router;

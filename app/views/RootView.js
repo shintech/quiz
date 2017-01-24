@@ -6,7 +6,8 @@ var RootView = Backbone.Marionette.View.extend({
       el: "#header-view"
     },
     main: {
-      el: "#main-view"
+      el: "#main-view",
+      replaceElement: true
     },
   },
   initialize: function(){

@@ -24,40 +24,40 @@ describe('Questions', function(){
       content: 'test question'
     });
 
-    var answer1 = new Answer({
-      _question: question._id,
-      content: "answer number 1"
-    });
-    var answer2 = new Answer({
-      _question: question._id,
-      content: "answer number 2"
-    });
-    var answer3 = new Answer({
-      _question: question._id,
-      content: "answer number 3"
-    });
-    var answer4 = new Answer({
-      _question: question._id,
-      content: "answer number 4"
-    });    
-    
-    answer1.save(function(err){
-      if(err){ console.log(err) }
-    });
-    answer2.save(function(err){
-      if(err){ console.log(err) }
-    });
-    answer3.save(function(err){
-      if(err){ console.log(err) }
-    });
-    answer4.save(function(err){
-      if(err){ console.log(err) }
-    });
-    
-    question.answers.push(answer1, answer2, answer3, answer4);
-    
     question.save(function(err){
       if(err){ console.log(err) }
+      var answer1 = new Answer({
+        _question: question._id,
+        content: "answer number 1"
+      });
+      var answer2 = new Answer({
+        _question: question._id,
+        content: "answer number 2"
+      });
+      var answer3 = new Answer({
+        _question: question._id,
+        content: "answer number 3"
+      });
+      var answer4 = new Answer({
+        _question: question._id,
+        content: "answer number 4"
+      });    
+      
+      answer1.save(function(err){
+        if(err){ console.log(err) }
+      });
+      answer2.save(function(err){
+        if(err){ console.log(err) }
+      });
+      answer3.save(function(err){
+        if(err){ console.log(err) }
+      });
+      answer4.save(function(err){
+        if(err){ console.log(err) }
+      });
+      
+      question.answers.push(answer1, answer2, answer3, answer4);  
+      question.save()
       done();
     });
   });
@@ -68,7 +68,7 @@ describe('Questions', function(){
     done();
   });
   
-  it('POST should create question and answers', function(done) {
+  it('POST should create question and answers at /api/questions', function(done) {
     chai.request(server)
     .post('/api/questions')
     .send({"content": "test question", "answer1": "answer1", "answer2": "answer2", "answer3": "answer3", "answer4": "answer4"})
@@ -97,7 +97,7 @@ describe('Questions', function(){
     });
   });
   
-  it('GET should list a SINGLE question at /api/question/:id ', function(done) {
+  it('GET should list a SINGLE question at /api/questions/:id ', function(done) {
     chai.request(server)
     .get('/api/questions')
     .end(function(err, res){
@@ -117,6 +117,21 @@ describe('Questions', function(){
     });
   });
   
+  it('GET should list a SINGLE question and answers at /api/questions/:id/answers', function(done) {
+    chai.request(server)
+    .get('/api/questions')
+    .end(function(err, res){
+      chai.request(server)
+      .get('/api/questions/' + res.body[0]._id + "/answers")
+      .end(function(err, res){
+        expect(res).to.have.status(200);
+        expect(res).to.be.json;
+        expect(res.body).to.be.a('array');
+        expect(res.body.length).to.equal(4)
+        done();
+      });
+    });    
+  })  
   it.skip('PUT should update a single question at /api/questions/:id', function(done) {
     chai.request(server)
     .get('/api/questions')

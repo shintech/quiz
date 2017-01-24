@@ -1,23 +1,25 @@
+var Answers = require("../collections/Answers");
+var AnswersView = require("./AnswersView");
+
 var QuestionView = Backbone.Marionette.View.extend({
   tagName: 'div',
+  className: 'question-view',
   template: require("../templates/question-view-template.html"),
-  events: {
-    'click .answer': 'clickAnswer'
-  },
   initialize: function(){
-    console.log("questionView initialize")
-    console.log(this.model.attributes)
+    this.collection = new Answers({ question: this.model});
+    this.collection.fetch();
   },
-  attributes: function(){
-    if (this.model.get('correct')){
-      return {
-        "data-id": this.model.get('correct')
-      }
+  regions: {
+    answers: {
+      el: '.answer-view',
+      replaceElement: true
     }
   },
-  clickAnswer: function(e){
-    console.log($(e.currentTargetcorrect).data('correct'))
+  onRender: function(){
+    var answersView = new AnswersView({ collection: this.collection});
+    this.showChildView('answers', answersView);
   }
+  
 });
 
 module.exports = QuestionView;

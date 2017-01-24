@@ -1,7 +1,2 @@
-<%- content %>
-
-<ul>
-  <% answers.forEach(function(data){ %>
-    <li class="answer" correct=<%- data.correct %>><%- JSON.stringify(data.content) %></li> 
-  <% }, this) %>  
-</ul>
+<p><%- content %></p>
+<div class="answer-view"></div>

@@ -19,8 +19,17 @@ function getSingleQuestion(req, res){
   })
 }
 
-function getQuestionsAnswers(req, res){
+function getAnswers(req, res){
   Answer.find()
+    .populate('_question')
+    .exec(function(err, answer){
+      res.status(200)
+        .json(answer)
+    })
+}
+
+function getQuestionsAnswers(req, res){
+  Answer.where('_question', req.params.id)
     .populate('_question')
     .exec(function(err, answer){
       res.status(200)
@@ -35,7 +44,9 @@ function createQuestion(req, res){
   });
   
   question.save(function(err, data){ 
-    if(err){ console.log(err) }
+    
+    if(err){ res.send(err) }
+    
     var answer1 = new Answer({
       _question: data._id,
       content: req.body.answer1,
@@ -57,16 +68,16 @@ function createQuestion(req, res){
       correct: req.body.answer4Correct
     }); 
     answer1.save(function(err){
-      if(err){ console.log(err) }
+      if(err){ res.send(err) }
     });
     answer2.save(function(err){
-      if(err){ console.log(err) }
+      if(err){ res.send(err) }
     });
     answer3.save(function(err){
-      if(err){ console.log(err) }
+      if(err){ res.send(err) }
     });
     answer4.save(function(err){
-      if(err){ console.log(err) }
+      if(err){ res.send(err) }
     });
     
     question.answers.push(answer1._id, answer2._id, answer3._id, answer4._id);
@@ -75,8 +86,6 @@ function createQuestion(req, res){
     res.status(200)
       .json({ success: data, message: "Created one question...", });
   });
-
-
 
 }
 
@@ -109,4 +118,5 @@ module.exports = {
   updateQuestion: updateQuestion,
   removeQuestion: removeQuestion,
   getQuestionsAnswers: getQuestionsAnswers,
+  getAnswers: getAnswers
 };
