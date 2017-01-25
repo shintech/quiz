@@ -2,14 +2,26 @@ var AnswerView = Backbone.Marionette.View.extend({
   tagName: 'li',
   className: 'answer-view',
   template: require("../templates/answer-view-template.html"),
-  events: {
-    'click': 'handleClick'
+  initialize: function(){
+    if(this.model.get('_question')){
+      this.questionId = this.model.get('_question')._id;
+    }
+    this.listenTo(Backbone, 'submit:answer', this.handleClick)
   },
-  handleClick: function(e){
-    if(this.model.get('correct')){
-      this.$el.css('background-color', 'lightgreen')      
-    } else {
-      this.$el.css('background-color', 'red')      
+  serializeData: function(){
+    return {
+      "_id": this.model.get('_id'),
+      "content": this.model.get('content'),
+      "correct": this.model.get('correct'),
+      "_question": this.model.get('_question'),
+      "questionId": this.questionId
+    };
+  },  
+  handleClick: function(){
+    if($('[name=' + this.questionId + '-radio]:radio:checked').val() == this.model.get('_id') && this.model.get('correct')){
+      this.$el.css('background-color', 'lightgreen');  
+    } else if ($('[name=' + this.questionId + '-radio]:radio:checked').val() == this.model.get('_id') && !this.model.get('correct')){
+      this.$el.css('background-color', 'red');  
     }
   }
 });

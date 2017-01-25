@@ -131,14 +131,15 @@ describe('Questions', function(){
         done();
       });
     });    
-  })  
-  it.skip('PUT should update a single question at /api/questions/:id', function(done) {
+  }) 
+  
+  it('PUT should update a single question at /api/questions/:id', function(done) {
     chai.request(server)
     .get('/api/questions')
     .end(function(err, res){
       chai.request(server)
       .put('/api/questions/' + res.body[0]._id)
-      .send({"name": "turd sandwich"})
+      .send({"content": "turd sandwich"})
       .end(function(error, response){
         expect(response).to.have.status(200);
         expect(response).to.be.json;

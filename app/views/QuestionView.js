@@ -9,6 +9,9 @@ var QuestionView = Backbone.Marionette.View.extend({
     this.collection = new Answers({ question: this.model});
     this.collection.fetch();
   },
+  events: {
+    'click .submit-answer': "handleClick"
+  },
   regions: {
     answers: {
       el: '.answer-view',
@@ -18,7 +21,10 @@ var QuestionView = Backbone.Marionette.View.extend({
   onRender: function(){
     var answersView = new AnswersView({ collection: this.collection});
     this.showChildView('answers', answersView);
-  }
+  },
+  handleClick: function(){
+    Backbone.trigger('submit:answer')
+  }  
   
 });
 
